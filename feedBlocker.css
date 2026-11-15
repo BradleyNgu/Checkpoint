@@ -45,29 +45,10 @@
 
 .sjsc-career-block-overlay p {
   max-width: 360px;
-  margin: 6px 0 13px;
+  margin: 6px 0 0;
   color: #666666;
   font-size: 13px;
   line-height: 1.4;
-}
-
-.sjsc-career-block-reveal {
-  padding: 6px 14px;
-  border: 1px solid rgb(30, 136, 229);
-  border-radius: 999px;
-  background: transparent;
-  color: rgb(30, 136, 229);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 650;
-  cursor: pointer;
-}
-
-.sjsc-career-block-reveal:hover,
-.sjsc-career-block-reveal:focus-visible {
-  background: #e8f0fe;
-  outline: 2px solid rgb(30, 136, 229);
-  outline-offset: 2px;
 }
 
 .sjsc-career-block-overlay[data-sjsc-theme="dark"] {
@@ -85,20 +66,8 @@
   color: #b0b3b8;
 }
 
-.sjsc-career-block-overlay[data-sjsc-theme="dark"] .sjsc-career-block-reveal {
-  border-color: #70b5f9;
-  color: #70b5f9;
-}
-
-.sjsc-career-block-overlay[data-sjsc-theme="dark"] .sjsc-career-block-reveal:hover,
-.sjsc-career-block-overlay[data-sjsc-theme="dark"] .sjsc-career-block-reveal:focus-visible {
-  background: rgba(112, 181, 249, 0.14);
-  outline-color: #70b5f9;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .sjsc-career-block-overlay,
-  .sjsc-career-block-reveal {
+  .sjsc-career-block-overlay {
     transition: none;
   }
 }

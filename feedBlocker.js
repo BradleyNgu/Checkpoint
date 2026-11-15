@@ -1,7 +1,7 @@
 /**
  * LinkedIn home-feed filter for "I am joining..." career announcements.
  * Runs only on the home/feed route and overlays matching posts without
- * deleting them, so a false positive can be revealed deliberately.
+ * deleting them. There is no reveal control.
  */
 
 (function () {
@@ -110,12 +110,6 @@
     return normalize(headline?.innerText || headline?.textContent);
   }
 
-  function revealPost(post, overlay) {
-    post.dataset.sjscFeedRevealed = 'true';
-    post.classList.remove('sjsc-career-post-blocked');
-    overlay.remove();
-  }
-
   function isDarkTheme(post) {
     const root = document.documentElement;
     const marker = [
@@ -146,11 +140,7 @@
   }
 
   function blockPost(post) {
-    if (
-      !post ||
-      post.dataset.sjscFeedRevealed === 'true' ||
-      post.classList.contains('sjsc-career-post-blocked')
-    ) {
+    if (!post || post.classList.contains('sjsc-career-post-blocked')) {
       return;
     }
     const text = postText(post);
@@ -180,13 +170,7 @@
     explanation.textContent =
       'A new-job announcement was hidden to protect your job-search focus.';
 
-    const reveal = document.createElement('button');
-    reveal.type = 'button';
-    reveal.className = 'sjsc-career-block-reveal';
-    reveal.textContent = 'Show anyway';
-    reveal.addEventListener('click', () => revealPost(post, overlay));
-
-    overlay.append(shield, title, explanation, reveal);
+    overlay.append(shield, title, explanation);
     post.appendChild(overlay);
   }
 
