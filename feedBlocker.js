@@ -29,13 +29,18 @@
   const TEXT_CANDIDATE_SELECTOR = [
     'main [data-view-name*="commentary"]',
     'main [data-test-id*="commentary"]',
+    'main [data-view-name*="celebration"]',
     'main [dir="ltr"]',
+    'main h2',
+    'main h3',
     'main p',
   ].join(',');
 
   const AUTHOR_HEADLINE_SELECTOR = [
     '.update-components-actor__description',
     '.feed-shared-actor__description',
+    '.update-components-actor__sub-description',
+    '.update-components-header',
     '[data-view-name="feed-actor-description"]',
     '[data-test-id*="actor-description"]',
   ].join(',');
@@ -67,6 +72,12 @@
     /\b(?:thrilled|excited|happy|delighted|pleased|proud)\s+to\s+(?:share|announce|welcome)\b.{0,300}\b(?:is|will be|has)?\s*(?:joining|joined|joins)\b/i,
     // "Jane will be joining Acme as..."
     /\b(?:is|will be|has)\s+(?:officially\s+)?(?:joining|joined)\s+.{2,140}\s+as\s+(?:an?\s+)?/i,
+    // LinkedIn native job-change card: "Jaspreet Johar's job update"
+    /\bjob update\b/i,
+    // Card title: "Jaspreet Johar started a new position"
+    /\bstarted\s+a\s+new\s+(?:position|role|job)\b/i,
+    /\bis\s+celebrating\s+(?:a\s+|their\s+)?new\s+(?:position|role|job)\b/i,
+    /\bhas\s+a\s+new\s+(?:position|role|job)\b/i,
   ];
 
   function isFeedPage() {
@@ -148,7 +159,7 @@
     const hash = textHash(`${headline}\n${text}`);
     if (post.dataset.sjscFeedTextHash === hash) return;
     post.dataset.sjscFeedTextHash = hash;
-    if (!isCareerAnnouncement(text) && !/\bincoming\b/i.test(headline)) return;
+    if (!isCareerAnnouncement(`${headline}\n${text}`)) return;
 
     post.classList.add('sjsc-career-post-blocked');
 
@@ -220,7 +231,7 @@
         }
       });
       root.querySelectorAll(AUTHOR_HEADLINE_SELECTOR).forEach((headline) => {
-        if (/\bincoming\b/i.test(headline.innerText || headline.textContent)) {
+        if (isCareerAnnouncement(headline.innerText || headline.textContent)) {
           const post = resolvePost(headline);
           if (post) posts.add(post);
         }
